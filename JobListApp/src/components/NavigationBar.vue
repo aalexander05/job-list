@@ -8,15 +8,55 @@
             <v-btn :text="'Create New'" :to="'/job/edit'"></v-btn>
 
             <v-spacer></v-spacer>
+            <span v-if="state.isAuthenticated" class="mx-5">
+                <span>Hello, {{ state.user?.name }}! </span>
+            </span>
 
-            <v-responsive max-width="160">
+            <span v-if="state.isAuthenticated">
+                <v-btn :text="'Log Out'" variant="outlined" @click="handleLogout"></v-btn>
+            </span>
+
+            <span v-else>
+                <v-btn :text="'Log In'"  variant="outlined" @click="handleLogin"></v-btn>
+            </span>
+
+            <!-- <v-responsive max-width="160">
+
                 <v-text-field density="compact" label="Search" rounded="lg" variant="solo-filled" flat hide-details
                     single-line></v-text-field>
-            </v-responsive>
+            </v-responsive> -->
         </v-container>
     </v-app-bar>
 </template>
 
 <script setup>
+import axios from 'axios'
+import { onMounted, ref } from 'vue'
+import { msalService } from '@/config/useAuth'
+import { msalInstance, state } from '@/config/msalConfig'
+const { login, logout, handleRedirect, registerAuthorizationHeaderInterceptor } = msalService()
+
+
+async function handleLogin() {
+    await login()
+}
+
+function handleLogout() {
+    logout()
+}
+
+async function initialize() {
+    try {
+        await msalInstance.initialize()
+        registerAuthorizationHeaderInterceptor() // Call the initialize function
+    } catch (error) {
+        console.log('Initialization error', error)
+    }
+}
+
+onMounted(async () => {
+    await initialize()
+    await handleRedirect()
+})
 
 </script>

@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@azure/msal-browser": "^3.19.1",
     "@formkit/vue": "^1.6.5",
     "@mdi/font": "6.2.95",
     "@vuelidate/core": "^2.0.3",

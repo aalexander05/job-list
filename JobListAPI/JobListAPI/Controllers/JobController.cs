@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using JobListAPI.Data.DataManagers;
 using JobListAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobListAPI.Controllers;
 
+[Authorize]
 [Route("[controller]")]
 public class JobController : ControllerBase
 {
