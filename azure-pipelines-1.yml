@@ -15,6 +15,15 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo Write your commands here
+      
+      dir
+      
+      cd JobListApp
+
 - script: |
     npm install
     npm run build
