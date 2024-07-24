@@ -56,7 +56,7 @@ let currentPathObject = router.currentRoute.value
 
 let state
 if (router.currentRoute.value.params.id) {
-    const job = await axios.get(`https://localhost:7178/Job/${router.currentRoute.value.params.id}`)
+    const job = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/Job/${router.currentRoute.value.params.id}`)
     state = reactive(job.data);
 } else {
     state = reactive({
@@ -87,7 +87,7 @@ async function onSubmit() {
     }
     if (!state.id) {
         try {
-            const response = await axios.post("https://localhost:7178/Job", state);
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/Job`, state);
         } catch (error) {
             console.error(error)
             if (error.response.status === 500) {
@@ -96,7 +96,7 @@ async function onSubmit() {
             return
         }
     } else {
-        const response = await axios.put("https://localhost:7178/Job", state);
+        const response = await axios.put(`${import.meta.env.VITE_API_BASE_URL}/Job`, state);
     }
     router.push('/')
 }

@@ -52,7 +52,7 @@ const router = useRouter()
 
 const job: any = ref<Job>()
 if (router.currentRoute.value.params.id) {
-    const response = await axios.get(`https://localhost:7178/Job/View/${router.currentRoute.value.params.id}`)
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/Job/View/${router.currentRoute.value.params.id}`)
     const jobDto: Job = response.data
 
     job.value = jobDto;

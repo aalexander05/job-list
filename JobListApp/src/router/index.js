@@ -1,5 +1,8 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import { msalInstance, state } from '@/config/msalConfig'
+import { msalService } from '@/config/useAuth'
+const { login, logout, handleRedirect, registerAuthorizationHeaderInterceptor } = msalService()
+
 
 
 import Jobs from '@/components/Jobs.vue'
@@ -28,7 +31,7 @@ const routes = [
         component: About 
     },
     { 
-        path: '/job/edit/:id?', 
+        path: '/job/edit', 
         name: "Job Edit",
         alias: "/job/edit/:id",
         component: JobEdit,
@@ -46,24 +49,20 @@ const routes = [
     },
 ]
 
-
-  
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+    await msalInstance.initialize()
+    await handleRedirect()
     if (to.matched.some(record => record.meta.requiresAuth)) {
       // this route requires auth, check if logged in
       // if not, redirect to login page.
 
-      if (msalInstance) {
-        console.log("we have msalInstance")
-      }
 
-      if (!state.isAuthenticated) {
+      if (!msalInstance.getAllAccounts().length > 0) {
         next({ name: 'Login' })
       } else {
         next() // go to wherever I'm going

@@ -61,7 +61,7 @@ onMounted(async () => {
 })
 
 async function getJobs() {
-  const response = await axios.get("https://localhost:7178/Job")
+  const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/Job`)
   jobs.value = response.data
 }
 
@@ -90,7 +90,7 @@ function closeDeleteDialog() {
 
 
 async function deleteItemConfirm() {
-  const result = await axios.delete(`https://localhost:7178/Job/${jobToDelete.id}`);
+  const result = await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/Job/${jobToDelete.id}`);
   await getJobs()
   closeDeleteDialog()
 }

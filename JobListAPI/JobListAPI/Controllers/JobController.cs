@@ -2,7 +2,9 @@
 using JobListAPI.Data.DataManagers;
 using JobListAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace JobListAPI.Controllers;
 
@@ -12,11 +14,13 @@ public class JobController : ControllerBase
 {
     private readonly IJobManager _jobManager;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public JobController(IJobManager jobManager, IMapper mapper)
+    public JobController(IJobManager jobManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _jobManager = jobManager;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost]
@@ -50,6 +54,10 @@ public class JobController : ControllerBase
             return NotFound();
         }
 
+        // var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+
+        // var claim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("name", StringComparison.CurrentCultureIgnoreCase));
+
         _mapper.Map(job, jobToUpdate);
 
         await _jobManager.UpdateJob(jobToUpdate);
@@ -62,6 +70,8 @@ public class JobController : ControllerBase
         Job job = await _jobManager.GetJobById(id);
 
         DTOs.JobRequest jobDto = _mapper.Map<DTOs.JobRequest>(job);
+
+        
 
         return Ok(jobDto);
     }
