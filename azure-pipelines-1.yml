@@ -18,11 +18,13 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      echo Write your commands here
+      echo DEBUG DEBUG DEBUG DEBUG DEBUG 
       
       dir
       
       cd JobListApp
+
+      dir
 
 - script: |
     npm install
