@@ -22,6 +22,21 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo Write your commands here
+      
+      dir
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'JobListApp/dist'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
